@@ -8,9 +8,10 @@ chrome.extension.sendMessage({method: "getLocalStorage"}, function(response) {
 	    var last = new Date(localStorage["lastaccess"]);
 	    localStorage["lastaccess"] = d; 
 
-	    if(!(last.getDay() == d.getDay() && 
+
+	    if(!(last.getDate() == d.getDate() && 
 	       last.getMonth() == d.getMonth() &&
-	       last.getYear() == d.getYear())){
+	       last.getFullYear() == d.getFullYear())){
 		    //not the same day, reset counter
 		localStorage["visitstofacebook"] = 1; 
 	    } else { 
