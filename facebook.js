@@ -1,22 +1,27 @@
 chrome.extension.sendMessage({method: "getLocalStorage"}, function(response) {
     // increment to storage
     var score = function() {
+	    
+
+	    var visitstofacebook = 1;
+	    // a bit of a hack..
+	    var last =  new Date("July 21, 1983 01:15:00");
 	    var d = new Date(); 
-	    if(!localStorage["visitstofacebook"]) localStorage["visitstofacebook"] = 1;
-	    if(!localStorage["lastaccess"]) localStorage["lastaccess"] = d;
+	    var object = JSON.parse(localStorage.getItem("key"));
+	    if(object){
+	    	visitstofacebook = object.visits;
+		last = new Date(object.timestamp);
+	    }
 
-	    var last = new Date(localStorage["lastaccess"]);
-	    localStorage["lastaccess"] = d; 
-
-
-	    if(!(last.getDate() == d.getDate() && 
+	    if((last.getDate() == d.getDate() && 
 	       last.getMonth() == d.getMonth() &&
 	       last.getFullYear() == d.getFullYear())){
-		    //not the same day, reset counter
-		localStorage["visitstofacebook"] = 1; 
-	    } else { 
-		localStorage["visitstofacebook"]++;
+		    // same day; increment
+		visitstofacebook++;
 	    }
+
+	    object = {visits: visitstofacebook, timestamp: new Date()}
+	    localStorage.setItem("key", JSON.stringify(object));
 
 	    notificationDefaults = {
 		    title:'Facebook DEconditioner', 
@@ -24,7 +29,7 @@ chrome.extension.sendMessage({method: "getLocalStorage"}, function(response) {
 	  };
 
         var notification = jQuery.extend(notificationDefaults, {
-          text: "You visited Facebook " +  localStorage["visitstofacebook"] + " Times today"
+          text: "You visited Facebook " +  visitstofacebook  + " Times today"
         });
         chrome.extension.sendMessage({method: "showNotification", notification: notification}, function(response) {}); 
       }
