@@ -5,14 +5,14 @@ chrome.extension.sendMessage({method: "getLocalStorage"}, function(response) {
 	    var d = new Date(); 
 	    var month = d.getMonth()+1;
 	    var today = d.getFullYear() + "-" + month +"-" + d.getDate();
+	    //var today = d.getFullYear() + "-" + month +"-21";
 
 	    chrome.storage.sync.get('key2', function (object) {
+		    var object = object.key2;
 		
-		    console.log(object.key2[today]);
-		    if(object.key2[today]){
-			object[today] = object.key2[today]+1;
+		    if(object[today]){
+			object[today] = object[today]+1;
 		    }else{
-			var object = {};
 			object[today] = 1;
 		   }
 
