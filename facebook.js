@@ -10,10 +10,15 @@ chrome.extension.sendMessage({method: "getLocalStorage"}, function(response) {
 	    chrome.storage.sync.get('key2', function (object) {
 		    var object = object.key2;
 		
+		    if(object){
 		    if(object[today]){
 			object[today] = object[today]+1;
 		    }else{
 			object[today] = 1;
+		   }
+		   }else{
+			   var object = {};
+			   object[today] = 1;
 		   }
 
 		    chrome.storage.sync.set({'key2': object});
